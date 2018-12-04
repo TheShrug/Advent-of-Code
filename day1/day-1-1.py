@@ -3,3 +3,6 @@ file = open("input.txt")
 for line in file:
     frequency += int(line)
 print(frequency)
+
+
+
