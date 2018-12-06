@@ -67,7 +67,6 @@ shift_start_index = None
 shift_end_index = None
 for index, log in enumerate(logs):
     if log.find('#') > -1:
-        # if shift_start_index is not None and shift_end_index is not None:
         if shift_start_index is None:
             shift_start_index = index
         if shift_start_index != index:
