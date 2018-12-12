@@ -19,6 +19,8 @@ grid = numpy.zeros((max_coordinates[0] + 1, max_coordinates[1] + 1), numpy.int16
 for index, coordinate in enumerate(coordinates_list):
     grid[coordinate[0],coordinate[1]] = index + 1
 
+save_zone_size = 0
+
 for x_index, x in enumerate(grid):
     for y_index, y in enumerate(grid):
         closest_distance = 9999
@@ -34,6 +36,8 @@ for x_index, x in enumerate(grid):
             grid[x_index, y_index] = distances.index(closest_distance) + 1
         if x_index == max_coordinates[0] or x_index == 0 or y_index == max_coordinates[1] or y_index == 0:
             infinite_indexes.add(grid[x_index, y_index])
+        if sum(distances) < 10000:
+            save_zone_size += 1
 
 print(grid)
 
@@ -44,3 +48,5 @@ for infinite_index in infinite_indexes:
     del unique_indexes_in_grid[infinite_index]
 
 print("max area:", max(unique_indexes_in_grid.values()))
+
+print("save zone size:", save_zone_size)
