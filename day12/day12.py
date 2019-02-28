@@ -1,5 +1,6 @@
 import collections
 from recordtype import recordtype
+import matplotlib.pyplot as plt
 
 
 def place_empty_pots_around(pots):
@@ -30,9 +31,11 @@ def simulate_day(pots, rules):
 
 
 def simulate_days(number_of_days, pots, rules):
+    count_at_each_generation = []
     for i in range(number_of_days):
         pots = simulate_day(pots, rules)
-    return pots
+        count_at_each_generation.append(get_count(pots))
+    return count_at_each_generation
 
 
 def check_pot_for_pattern(index, pot, pots, rules):
@@ -46,6 +49,14 @@ def check_pot_for_pattern(index, pot, pots, rules):
             if pot_pattern == rule.pattern:
                 return Pot(pot.number, rule.output)
     return pot
+
+
+def get_count(pots):
+    count = 0
+    for pot in pots:
+        if pot.value == '#':
+            count += pot.number
+    return count
 
 
 input = open("input.txt")
@@ -66,12 +77,17 @@ for index, line in enumerate(input):
             pattern.append(char)
         rules.append(Rule(pattern, line[9]))
 
-final_pots = simulate_days(20, pots, rules)
 
-final_count = 0
+final_counts = simulate_days(800, pots, rules)
 
-for final_pot in final_pots:
-    if final_pot.value == '#':
-        final_count += final_pot.number
+"""
+simulating 50 billion days was not reasonable with this algorithm. The better approach would be to try and 
+find a pattern and calculate from that. Turns out at less than 200 generations the number
+starts increasing by 42 per generation. matplotlib is pretty neat
+"""
 
-print('part 1:', final_count)
+plt.plot(final_counts)
+plt.show()
+
+print(final_counts[-1] + (42 * 49999999800))
+
